@@ -1,0 +1,36 @@
+/* Styled markdown container */
+.markdownBody {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: #333;
+}
+
+/* Headings inside markdown */
+.markdownBody h1,
+.markdownBody h2,
+.markdownBody h3,
+.markdownBody h4 {
+    margin-top: 1.4rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    color: #222;
+}
+
+/* Paragraphs */
+.markdownBody p {
+    margin-bottom: 1rem;
+}
+
+/* Lists */
+.markdownBody ul,
+.markdownBody ol {
+    margin-left: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+/* Inline code */
+.markdownBody code {
+    background-color: #f3f3f3;
+    padding: 2px 5px;
+    border-radius: 4px;
+}

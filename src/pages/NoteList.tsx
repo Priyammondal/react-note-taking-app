@@ -129,12 +129,12 @@ const NoteList = ({ availableTags, notes, onUpdateTag, onDeleteTag }: NoteListPr
     return (
         <>
             {/* Header */}
-            <Row className="align-items-center mb-4">
+            <Row className="mb-4 flex-column flex-md-row align-items-left align-items-md-center">
                 <Col>
                     <h1 className="fw-bold">
                         📝 Your Notes
                     </h1>
-                    <p className="text-muted mt-n2">Manage, organize, and explore your saved notes.</p>
+                    <p className="text-muted mt-2">Manage, organize, and explore your saved notes.</p>
                 </Col>
 
                 <Col xs="auto">

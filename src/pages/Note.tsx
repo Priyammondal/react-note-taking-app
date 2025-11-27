@@ -16,7 +16,7 @@ const Note = ({ onDelete }: NoteProps) => {
         <div className="pb-5">
 
             {/* Page Header */}
-            <Row className="align-items-center mb-4">
+            <Row className="mb-4 flex-column flex-md-row align-items-left align-items-md-center gap-2">
                 <Col>
                     <h2 className="fw-semibold" style={{ color: "#222", letterSpacing: "-0.5px" }}>
                         {note.title}
