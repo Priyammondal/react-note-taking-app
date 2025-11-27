@@ -1,50 +1,90 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useNote } from '../layouts/NoteLayout'
-import { Badge, Button, Col, Row, Stack } from 'react-bootstrap';
-import Markdown from 'react-markdown';
+import { Link, useNavigate } from "react-router-dom";
+import { useNote } from "../layouts/NoteLayout";
+import { Badge, Button, Col, Row, Stack, Card } from "react-bootstrap";
+import Markdown from "react-markdown";
+import styles from "../styles/Note.module.css";
 
 type NoteProps = {
-    onDelete: (id: string) => void
-}
+    onDelete: (id: string) => void;
+};
 
 const Note = ({ onDelete }: NoteProps) => {
     const note = useNote();
     const navigate = useNavigate();
+
     return (
-        <>
-            <Row className='align-items-center mb-4'>
+        <div className="pb-5">
+
+            {/* Page Header */}
+            <Row className="align-items-center mb-4">
                 <Col>
-                    <h1>{note.title}</h1>
-                    {
-                        note.tags.length > 0 && (
-                            <Stack gap={1} direction='horizontal' className='flex-wrap'>
-                                {note.tags.map(tag => <Badge key={tag.id} className='text-truncate p-2'>{tag.label}</Badge>)}
-                            </Stack>
-                        )
-                    }
+                    <h2 className="fw-semibold" style={{ color: "#222", letterSpacing: "-0.5px" }}>
+                        {note.title}
+                    </h2>
+
+                    {/* Tags */}
+                    {note.tags.length > 0 && (
+                        <Stack
+                            direction="horizontal"
+                            gap={2}
+                            className="flex-wrap mt-2"
+                            style={{ rowGap: "6px" }}
+                        >
+                            {note.tags.map((tag) => (
+                                <Badge
+                                    key={tag.id}
+                                    bg="primary"
+                                    pill
+                                    text="light"
+                                    className="px-3 py-2 fw-medium shadow-sm"
+                                >
+                                    {tag.label}
+                                </Badge>
+                            ))}
+                        </Stack>
+                    )}
                 </Col>
+
+                {/* Action Buttons */}
                 <Col xs="auto">
-                    <Stack gap={2} direction='horizontal'>
+                    <Stack direction="horizontal" gap={2}>
                         <Link to={`/${note.id}/edit`}>
-                            <Button variant='primary'>Edit</Button>
+                            <Button style={{ borderRadius: "12px" }} variant="primary">Edit</Button>
                         </Link>
+
                         <Button
+                            style={{ borderRadius: "12px" }}
+                            variant="outline-danger"
                             onClick={() => {
                                 onDelete(note.id);
-                                navigate("/")
+                                navigate("/");
                             }}
-                            variant='outline-danger'
                         >
-                            Delete</Button>
+                            Delete
+                        </Button>
+
                         <Link to="..">
-                            <Button variant='outline-secondary'>Back</Button>
+                            <Button style={{ borderRadius: "12px" }} variant="outline-secondary">Back</Button>
                         </Link>
                     </Stack>
                 </Col>
             </Row>
-            <Markdown>{note.markDown}</Markdown>
-        </>
-    )
-}
 
-export default Note
+            {/* Note Body */}
+            <Card
+                className="shadow-sm border-0"
+                style={{
+                    borderRadius: "18px",
+                    padding: "1.8rem",
+                    background: "white",
+                }}
+            >
+                <div className={styles.markdownBody}>
+                    <Markdown>{note.markDown}</Markdown>
+                </div>
+            </Card>
+        </div>
+    );
+};
+
+export default Note;

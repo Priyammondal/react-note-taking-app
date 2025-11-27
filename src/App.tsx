@@ -1,14 +1,16 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import NewNote from "./pages/NewNote";
 import { useLocalStorage } from "./hooks/useLocalStorage";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import NoteList from "./pages/NoteList";
 import NoteLayout from "./layouts/NoteLayout";
 import Note from "./pages/Note";
 import EditNote from "./pages/EditNote";
+import About from "./pages/About";
+import Footer from "./components/Footer";
 
 export type Note = {
   id: string;
@@ -38,6 +40,23 @@ export type Tag = {
 const App = () => {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
   const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() === "n") {
+        navigate("/new");
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [navigate]);
 
   const notesWithTags = useMemo(() => {
     return notes.map(note => {
@@ -92,30 +111,49 @@ const App = () => {
     })
   }
 
+  const showFooter =
+    !isHomePage || (isHomePage && notesWithTags.length > 0);
+
+  const showGithubButton =
+    isHomePage && notesWithTags.length === 0;
+
   return (
-    <Container className="my-4">
-      <Routes>
-        <Route path="/" element={<NoteList availableTags={tags} notes={notesWithTags} onUpdateTag={updateTag} onDeleteTag={deleteTag} />} />
+    <div className="d-flex flex-column min-vh-100">
+      <main className="flex-grow-1">
+        <Container className="my-4">
+          <Routes>
+            <Route path="/" element={<NoteList availableTags={tags} notes={notesWithTags} onUpdateTag={updateTag} onDeleteTag={deleteTag} />} />
+            <Route path="/about" element={<About />} />
 
-        <Route path="/new" element={<NewNote onSubmit={onCreateNote} onAddTag={addTag} availableTags={tags} />} />
+            <Route path="/new" element={<NewNote onSubmit={onCreateNote} onAddTag={addTag} availableTags={tags} />} />
 
-        <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
-          <Route index element={<Note onDelete={onDeleteNote} />} />
-          <Route path="edit" element={<EditNote onSubmit={onUpdateNote} onAddTag={addTag} availableTags={tags} />} />
-        </Route>
-        <Route path="*" element={<Navigate to={"/"} />} />
-      </Routes>
+            <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
+              <Route index element={<Note onDelete={onDeleteNote} />} />
+              <Route path="edit" element={<EditNote onSubmit={onUpdateNote} onAddTag={addTag} availableTags={tags} />} />
+            </Route>
+            <Route path="*" element={<Navigate to={"/"} />} />
+          </Routes>
+        </Container>
+      </main>
 
-      <a
+
+      {showGithubButton && <a
         href="https://github.com/Priyammondal/react-note-taking-app"
         target="_blank"
         rel="noopener noreferrer"
-        className="btn position-fixed bottom-0 end-0 m-4 rounded-circle d-flex align-items-center justify-content-center"
-        style={{ width: "40px", height: "40px" }}
+        className="github-icon btn position-fixed bottom-0 end-0 m-3 rounded-circle d-flex align-items-center justify-content-center"
       >
-        <img width="40" height="40" src="https://img.icons8.com/office/80/github.png" alt="github"/>
-      </a>
-    </Container>
+        <img
+          width="50"
+          height="50"
+          src="https://img.icons8.com/external-tal-revivo-color-tal-revivo/96/external-github-with-cat-logo-an-online-community-for-software-development-logo-color-tal-revivo.png"
+          alt="GitHub"
+        />
+      </a>}
+
+      {showFooter && <Footer />}
+
+    </div>
   );
 };
 
