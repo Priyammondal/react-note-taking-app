@@ -105,6 +105,16 @@ const App = () => {
         </Route>
         <Route path="*" element={<Navigate to={"/"} />} />
       </Routes>
+
+      <a
+        href="https://github.com/Priyammondal/react-note-taking-app"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn position-fixed bottom-0 end-0 m-4 rounded-circle d-flex align-items-center justify-content-center"
+        style={{ width: "40px", height: "40px" }}
+      >
+        <img width="40" height="40" src="https://img.icons8.com/office/80/github.png" alt="github"/>
+      </a>
     </Container>
   );
 };
