@@ -141,7 +141,7 @@ const App = () => {
         href="https://github.com/Priyammondal/react-note-taking-app"
         target="_blank"
         rel="noopener noreferrer"
-        className="github-icon btn position-fixed bottom-0 end-0 m-3 rounded-circle d-flex align-items-center justify-content-center"
+        className="github-icon btn position-fixed bottom-0 end-0 m-3 rounded-circle d-none d-md-flex align-items-center justify-content-center"
       >
         <img
           width="50"
